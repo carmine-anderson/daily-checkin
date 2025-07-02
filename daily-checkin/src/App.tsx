@@ -3,12 +3,14 @@
 // import viteLogo from '/vite.svg'
 import './App.css'
 import CheckinForm from './components/CheckinForm'
+import Dashboard from './components/Dashboard';
 
 function App() {
   return (
     <div className="container">
       <h1>Daily Check-in</h1>
       <CheckinForm />
+      <Dashboard />
     </div>
   );
   // const [count, setCount] = useState(0)

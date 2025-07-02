@@ -1,0 +1,22 @@
+.dashboard {
+    background-color: #1a1a1a;
+    padding: 2rem;
+    border-radius: 10px;
+    color: #f0f0f0;
+    box-shadow: 0 0 15px rgba(255, 105, 180, 0.2);
+    margin-top: 2rem;
+  }
+  
+  .dashboard h2 {
+    margin-bottom: 1rem;
+  }
+  
+  .dashboard ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .dashboard li {
+    margin-bottom: 0.75rem;
+  }
+  
