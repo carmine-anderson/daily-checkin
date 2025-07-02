@@ -1,22 +1,30 @@
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 
-// Setup Supabase client
 const supabase = createClient(
   process.env.SUPABASE_URL!,
   process.env.SUPABASE_ANON_KEY!
 );
 
-// Setup Resend
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async (request: Request) => {
+  if (request.method === "OPTIONS") {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+    });
+  }
+
   if (request.method !== "POST") {
     return new Response("Method Not Allowed", {
       status: 405,
       headers: {
-        "Access-Control-Allow-Origin": "*", 
-        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Origin": "*",
       },
     });
   }
@@ -28,18 +36,25 @@ export default async (request: Request) => {
     const { error } = await supabase.from("checkins").insert([{ message, mood }]);
 
     if (error) {
-      return new Response("Error inserting into Supabase", {
+      return new Response("Supabase Error: " + error.message, {
         status: 500,
         headers: {
           "Access-Control-Allow-Origin": "*",
         },
       });
     }
+    
+    await resend.emails.send({
+      from: "Daily Check-in <onboarding@resend.dev>",  // static domain
+      to: "carmine.anderson@outlook.com",                            
+      subject: "📝 New Daily Check-in",
+      html: `<p><strong>Mood:</strong> ${mood}</p><p><strong>Message:</strong> ${message}</p>`,
+    });
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
       headers: {
-        "Access-Control-Allow-Origin": "*", 
+        "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
       },
     });
@@ -47,7 +62,7 @@ export default async (request: Request) => {
     return new Response("Server Error", {
       status: 500,
       headers: {
-        "Access-Control-Allow-Origin": "*", 
+        "Access-Control-Allow-Origin": "*",
       },
     });
   }
