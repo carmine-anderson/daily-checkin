@@ -6,7 +6,7 @@ import CheckinForm from './components/CheckinForm'
 
 function App() {
   return (
-    <div className="App">
+    <div className="container">
       <h1>Daily Check-in</h1>
       <CheckinForm />
     </div>
