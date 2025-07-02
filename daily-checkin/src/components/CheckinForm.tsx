@@ -8,7 +8,10 @@ const CheckinForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await axios.post("/.netlify/functions/submit", { message, mood });
+    await axios.post("https://jazzy-syrniki-7bea9d.netlify.app/.netlify/functions/submit", {
+        message,
+        mood,
+      });
     setSubmitted(true);
   };
 
