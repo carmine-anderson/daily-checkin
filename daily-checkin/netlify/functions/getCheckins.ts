@@ -6,7 +6,7 @@ const supabase = createClient(
   process.env.SUPABASE_ANON_KEY!
 );
 
-export default async () => {
+export const Handler = async () => {
   const { data, error } = await supabase
     .from("checkins")
     .select("*")
