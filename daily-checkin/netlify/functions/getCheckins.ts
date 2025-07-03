@@ -1,4 +1,5 @@
 // netlify/functions/getCheckins.ts
+
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
@@ -7,27 +8,24 @@ const supabase = createClient(
 );
 
 export const handler = async () => {
-  const { data, error } = await supabase
-    .from("checkins")
-    .select("*")
-    // .order("created_at", { ascending: false });
-    console.log("Fetched check-ins:", data);
+  const { data, error } = await supabase.from("checkins").select("*");
 
+  console.log("Fetched check-ins:", data);
 
   if (error) {
-    return new Response("Failed to fetch checkins: " + error.message, {
-      status: 500,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-    });
+    return {
+      statusCode: 500,
+      headers: { "Access-Control-Allow-Origin": "*" },
+      body: `Supabase error: ${error.message}`,
+    };
   }
 
-  return new Response(JSON.stringify(data), {
-    status: 200,
+  return {
+    statusCode: 200,
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
     },
-  });
+    body: JSON.stringify(data),
+  };
 };
