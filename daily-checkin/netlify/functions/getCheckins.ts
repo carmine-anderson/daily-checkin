@@ -10,7 +10,7 @@ export default async () => {
   const { data, error } = await supabase
     .from("checkins")
     .select("*")
-    .order("created_at", { ascending: false });
+    // .order("created_at", { ascending: false });
     console.log("Fetched check-ins:", data);
 
 
