@@ -33,7 +33,13 @@ export default async (request: Request) => {
     const body = await request.json();
     const { message, mood } = body;
 
-    const { error } = await supabase.from("checkins").insert([{ message, mood }]);
+    const { error } = await supabase.from("checkins").insert([
+      {
+        message,
+        mood,
+        created_at: new Date().toISOString(), 
+      },
+    ]);
 
     if (error) {
       return new Response("Supabase Error: " + error.message, {
